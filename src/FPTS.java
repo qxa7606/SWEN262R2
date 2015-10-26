@@ -55,6 +55,22 @@ public class FPTS {
 		
 	}
 	
+	public static List<Equity> Search(String term){
+		Iterator it = equities.entrySet().iterator();
+		List<Equity> lst = new ArrayList();
+		while (it.hasNext()){
+			Map.Entry pair = (Map.Entry) it.next();
+			Equity curr = (Equity) pair.getValue();
+			if (curr.getName().contains(term) || curr.getTicker().contains(term)){
+				lst.add(curr);			
+			}
+		}
+		return lst;
+	}
+	
+	
+	
+	
 	public static void ImportPortfolios(String filename){
 	    try {
 
