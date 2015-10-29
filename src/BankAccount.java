@@ -6,7 +6,7 @@ public class BankAccount extends Account{
 	}
 
 	@Override
-	String returnType() {
+	String getType() {
 		return "Bank";
 	}
 
