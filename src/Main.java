@@ -160,7 +160,7 @@ public class Main {
 	
 	
 	public static void ExportPortfolios(){
-		String filename = "ExportedPortfolios";
+		String filename = "ExportedPortfolios.xml";
 		SAXParserFactory factory = SAXParserFactory.newInstance();
         try {
     		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();

@@ -123,12 +123,11 @@ public class MainWindow {
 				int option = JOptionPane.showConfirmDialog(desiredPw, message, title, JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION) {
 					if (Main.getPortfolios().get(desiredName.getText()) == null) {
-						if (Main.addUser(desiredName.getText(), 
+						if (mainToUse.addUser(desiredName.getText(), 
 								new String(desiredPw.getPassword()), 
 								acntType.getSelectedItem().toString(), 
 								acntName.getText(), 
 								Float.parseFloat(acntWorth.getText()))){
-							
 								Main.ExportPortfolios();
 								title = "Success";
 								actionPerformed(arg0);
