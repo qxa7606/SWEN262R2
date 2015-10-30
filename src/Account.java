@@ -1,7 +1,7 @@
 import java.util.Date;
 
 public abstract class Account {
-	abstract String returnType();
+	abstract String getType();
 	
 	private String name;
 	private float initialAmount;

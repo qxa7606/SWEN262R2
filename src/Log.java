@@ -7,9 +7,6 @@ public class Log {
 	private String ticker;
 	private float ammount;
 	private Date date;
-
-
-
 	private String accountName;
 	
 	public Log(int num, String ticker, String account, String type, float ammount) {

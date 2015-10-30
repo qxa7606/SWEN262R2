@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -95,6 +97,9 @@ public class Portfolio {
 	}
 	
 	public boolean transfer(String fromAcc, String toAcc, float amount){
+		if (fromAcc.equals(toAcc)){
+			return false;
+		}
 		if (accounts.get(fromAcc).getCurrentAmount()>=amount){
 			accounts.get(fromAcc).setCurrentAmount(accounts.get(fromAcc).getCurrentAmount()-amount);
 			accounts.get(toAcc).setCurrentAmount(accounts.get(toAcc).getCurrentAmount()+amount);
@@ -176,4 +181,14 @@ public class Portfolio {
 	public List<TransferLog> getTransferlogs() {
 		return tranferlogs;
 	}
+	
+	public List<Object> getRecent(List<Object> l){
+		
+		List<Object> lst = l;
+		BeanComparator bc = new BeanComparator(Object.class, "getDate");
+		Collections.sort(lst, bc);
+		
+		return lst;
+	}
+
 }

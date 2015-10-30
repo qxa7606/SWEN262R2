@@ -6,7 +6,7 @@ public class MarketAccount extends Account{
 	}
 
 	@Override
-	String returnType() {
+	String getType() {
 		return "Market";
 	}
 

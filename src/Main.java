@@ -1,5 +1,6 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,13 +20,18 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class FPTS {
+public class Main {
 	
 	private static Map<String, Portfolio> portfolios 
 		= new HashMap<String, Portfolio>();
 	private static Map<String, Equity> equities
 		= new HashMap<String, Equity>();
 	
+	private static MainWindow mainWindow;
+	private static PortfolioView portfolioView;
+	private static AccountView accountView;
+
+
 	public static void main(String args[]){
 		ImportEquities("equities.xml");
 		ExportEquities("equities.xml");
@@ -50,11 +56,35 @@ public class FPTS {
 		p1.sellEquity("ABC", 2, "firstAccount", 30.55f);
 		portfolios.put("Asim", p1);
 		
-		ExportPortfolios("exportedPortfolios.xml");
+		mainWindow = new MainWindow();
+		mainWindow.frame.setVisible(true);
+		//ExportPortfolios("exportedPortfolios.xml");
 		
 		
 	}
 	
+	public static boolean addUser(String username, String pass, String aType, String AName, float amount){
+		if (aType.equals("Market")){
+			Portfolio p = new Portfolio(username, pass, new MarketAccount(AName, amount));
+			portfolios.put(username, p);
+			return true;
+		}
+		else if (aType.equals("Bank")){
+			Portfolio p = new Portfolio(username, pass, new BankAccount(AName, amount));
+			portfolios.put(username, p);
+			return true;
+		}
+		return false;
+	}
+	
+	public static Map<String, Portfolio> getPortfolios() {
+		return portfolios;
+	}
+
+	public static Map<String, Equity> getEquities() {
+		return equities;
+	}
+
 	public static List<Equity> Search(String term){
 		Iterator it = equities.entrySet().iterator();
 		List<Equity> lst = new ArrayList();
@@ -129,7 +159,8 @@ public class FPTS {
 	}
 	
 	
-	public static void ExportPortfolios(String filename){
+	public static void ExportPortfolios(){
+		String filename = "ExportedPortfolios.xml";
 		SAXParserFactory factory = SAXParserFactory.newInstance();
         try {
     		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -373,6 +404,8 @@ public class FPTS {
 	        }
 	}
 	
+	
+	
 	public static void ExportEquities(String filename){
 		SAXParserFactory factory = SAXParserFactory.newInstance();
         try {
@@ -425,6 +458,31 @@ public class FPTS {
         } catch (Throwable t) {
             t.printStackTrace ();
         }
+	}
+	
+	
+	public static void setMainWindow(MainWindow mainWindow) {
+		Main.mainWindow = mainWindow;
+	}
+
+	public static void setPortfolioView(PortfolioView portfolioView) {
+		Main.portfolioView = portfolioView;
+	}
+
+	public static MainWindow getMainWindow() {
+		return mainWindow;
+	}
+
+	public static PortfolioView getPortfolioView() {
+		return portfolioView;
+	}
+
+	public static AccountView getAccountView() {
+		return accountView;
+	}
+
+	public static void setAccountView(AccountView accountView) {
+		Main.accountView = accountView;
 	}
 	
 }
