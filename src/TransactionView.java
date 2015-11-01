@@ -80,8 +80,6 @@ public class TransactionView extends JFrame {
 		frame.getContentPane().add(lblDate);
 
 		frame.getContentPane().add(backButton(portfolio));
-		// frame.getContentPane().add(transactionTable(portfolio));
-		// jsp.setVerticalScrollBar(arg0);
 		frame.getContentPane().add(transactionTable(portfolio));
 
 		JLabel lblEquity = new JLabel("Equity");

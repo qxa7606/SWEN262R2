@@ -56,8 +56,9 @@ public class Main {
 		p1.sellEquity("ABC", 2, "firstAccount", 30.55f);
 		portfolios.put("Asim", p1);
 		
-		mainWindow = new MainWindow();
-		mainWindow.frame.setVisible(true);
+		mainWindow = new MainWindow("FPTS", 100, 100, 824, 546, false);
+		mainWindow.getComponent();
+		//mainWindow.frame.setVisible(true);
 		//ExportPortfolios("exportedPortfolios.xml");
 		
 		
