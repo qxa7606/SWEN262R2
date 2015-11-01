@@ -2,6 +2,8 @@ import java.lang.reflect.*;
 import java.util.*;
 
 /**
+ * ****https://tips4java.wordpress.com/2008/10/23/bean-comparator/****
+ * 
  *  A comparator to sort on the specified field of a given class.
  *
  *  Reflection is used to retrieve the data to be sorted, therefore
@@ -26,7 +28,7 @@ public class BeanComparator implements Comparator
 
 
 	/*
-	 * https://tips4java.wordpress.com/2008/10/23/bean-comparator/
+	 * 
 	 *	Sort using default sort properties
 	 */
 	BeanComparator(Class<?> beanClass, String methodName)

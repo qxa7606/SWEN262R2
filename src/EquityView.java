@@ -46,7 +46,9 @@ public class EquityView {
 	private JTextField bDateAdded;
 	private JTextField accountType;
 	private JComboBox comboBox;
-
+	
+	private JTextField owns;
+	
 	/**
 	 * Create the frame.
 	 */
@@ -78,7 +80,7 @@ public class EquityView {
 		// portfolioName.setText(portfolio.getUser());
 		// portfolioName.setColumns(10);
 
-		JLabel lblBankAccount = new JLabel("Equities");
+		JLabel lblBankAccount = new JLabel("");
 		lblBankAccount.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		lblBankAccount.setBounds(335, 178, 91, 23);
 		frame.getContentPane().add(lblBankAccount);
@@ -91,12 +93,22 @@ public class EquityView {
 		lblCurrentAmount.setBounds(279, 287, 91, 14);
 		frame.getContentPane().add(lblCurrentAmount);
 
+		JLabel own = new JLabel("Owned");
+		own.setBounds(279, 312, 91, 14);
+		frame.getContentPane().add(own);
+		
+		owns = new JTextField();
+		owns.setEditable(false);
+		owns.setBounds(388, 307, 112, 20);
+		frame.getContentPane().add(owns);
+		owns.setColumns(10);
+		
 		bInitialAmount = new JTextField();
 		bInitialAmount.setEditable(false);
 		bInitialAmount.setBounds(388, 256, 112, 20);
 		frame.getContentPane().add(bInitialAmount);
 		bInitialAmount.setColumns(10);
-
+		
 		bCurrentAmount = new JTextField();
 		bCurrentAmount.setEditable(false);
 		bCurrentAmount.setColumns(10);
@@ -107,7 +119,13 @@ public class EquityView {
 		comboBox.setBounds(388, 208, 112, 20);
 		frame.getContentPane().add(comboBox);
 		for (String key : Main.getEquities().keySet()) {
-			comboBox.addItem(key);
+			if (portfolio.getOwnedEquities().containsKey(key)){
+				comboBox.addItem("<html><font color=\"red\">"+key+"</font></html>");
+			}
+			else{
+				comboBox.addItem(key);
+			}
+			
 		}
 
 		JLabel lblAccount = new JLabel("Equity");
@@ -124,6 +142,7 @@ public class EquityView {
 		frame.getContentPane().add(accountType);
 		accountType.setColumns(10);
 
+		
 		// adds buttons to the frame to look at equities,
 		// market accounts, and bank accounts
 		frame.getContentPane().add(backButton(portfolio));
@@ -280,10 +299,36 @@ public class EquityView {
 					// indices += s;
 					// indices += " - ";
 					// }
-					accountType.setText(Main.getEquities().get(comboBox.getSelectedItem().toString()).getName());
+					String sym;
+					if (comboBox.getSelectedItem().toString().contains("color")){
+						String temp = comboBox.getSelectedItem().toString();
+						String s = "";
+						for (int y = 0; y < temp.length(); y++){
+							if (Character.isUpperCase(temp.charAt(y))){
+								s = s+temp.charAt(y);
+							}
+						}
+						sym = s;
+					}
+					else{
+						sym = comboBox.getSelectedItem().toString();
+					}// bCurrentAmount.setText(String.format("%.2f",(mainToUse.sEquities.get(comboBox.getSelectedItem().toString()).getIndices().toString())));
+					String iis = "";
+					for (String s : Main.getEquities().get(sym).getIndices()){
+						iis = iis+s+",";
+					}
+					if (iis.length()>0){
+						bCurrentAmount.setText(iis.substring(0, iis.length()-1));
+					}
+					accountType.setText(Main.getEquities().get(sym).getName());
+					if (portfolio.getOwnedEquities().get(sym) != null){
+						owns.setText(portfolio.getOwnedEquities().get(sym).toString());
+					}
+					else{
+						owns.setText("0");
+					}
 					bInitialAmount.setText(String.format("%.2f",
-							(Main.getEquities().get(comboBox.getSelectedItem().toString()).getPrice())));
-					// bCurrentAmount.setText(String.format("%.2f",(mainToUse.sEquities.get(comboBox.getSelectedItem().toString()).getIndices().toString())));
+							(Main.getEquities().get(sym).getPrice())));
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, e);
 				}
