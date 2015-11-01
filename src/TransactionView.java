@@ -100,7 +100,7 @@ public class TransactionView extends JFrame {
 
 		DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
 		for (int i = 0; i < rows; i++) {
-			System.out.println(trans.get(i).getType().charAt(0));
+			System.out.println(trans.get(i).getDate());
 
 		}
 		JScrollPane jsp = new JScrollPane(container);

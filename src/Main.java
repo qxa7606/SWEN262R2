@@ -270,7 +270,7 @@ public class Main {
     			port.appendChild(watch);
     			
     			Element logs = doc.createElement("Logs");
-    			for (Log lg : ((Portfolio) pair.getValue()).getLogs()){
+    			for (EquityLog lg : ((Portfolio) pair.getValue()).geteLogs()){
     				Element log = doc.createElement("Log");
     				
     				Element type = doc.createElement("Type");

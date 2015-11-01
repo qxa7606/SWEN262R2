@@ -15,7 +15,10 @@ public class Portfolio {
 	private Map<String,Account> accounts = new HashMap<String,Account>();
 	private List<String> watchlist = new ArrayList<String>();
 	
+	
 	private List<Log> logs = new ArrayList<Log>();
+	
+	private List<EquityLog> elogs = new ArrayList<EquityLog>();
 	private List<AccountLog> accountlogs = new ArrayList<AccountLog>();
 	private List<TransferLog> tranferlogs = new ArrayList<TransferLog>();
 	
@@ -27,6 +30,10 @@ public class Portfolio {
 	
 	public Portfolio() {}
 
+	public List<Log> getLogs() {
+		return logs;
+	}
+
 	public boolean buyEquity(String tic, int num, String acc, float price){
 		
 		if (accounts.get(acc).getCurrentAmount()>= (num*price)){
@@ -37,12 +44,14 @@ public class Portfolio {
 			if (ownedEquities.containsKey(tic)){
 				int o = ownedEquities.get(tic);
 				ownedEquities.put(tic, o+num);
-				logs.add(new Log(num,tic,acc,"Buy",num*price));
+				elogs.add(new EquityLog(num,tic,acc,"Buy",num*price));
+				logs.add(new EquityLog(num,tic,acc,"Buy",num*price));
 				return true;
 			}
 			else{
 				ownedEquities.put(tic, num);
-				logs.add(new Log(num,tic,acc,"Buy",num*price));
+				elogs.add(new EquityLog(num,tic,acc,"Buy",num*price));
+				logs.add(new EquityLog(num,tic,acc,"Buy",num*price));
 				return true;
 			}
 		}
@@ -69,8 +78,8 @@ public class Portfolio {
 		this.watchlist = watchlist;
 	}
 
-	public void setLogs(List<Log> logs) {
-		this.logs = logs;
+	public void seteLogs(List<EquityLog> logs) {
+		this.elogs = logs;
 	}
 
 	public void setAccountlogs(List<AccountLog> accountlogs) {
@@ -87,7 +96,8 @@ public class Portfolio {
 			int n = old-num;
 			ownedEquities.put(tic, n);
 			accounts.get(acc).setCurrentAmount(accounts.get(acc).getCurrentAmount()+(num*price));
-			logs.add(new Log(num,tic,acc,"Sell",num*price));
+			elogs.add(new EquityLog(num,tic,acc,"Sell",num*price));
+			logs.add(new EquityLog(num,tic,acc,"Sell",num*price));
 			if (ownedEquities.get(tic) == 0){
 				ownedEquities.remove(tic);
 			}
@@ -103,7 +113,9 @@ public class Portfolio {
 		if (accounts.get(fromAcc).getCurrentAmount()>=amount){
 			accounts.get(fromAcc).setCurrentAmount(accounts.get(fromAcc).getCurrentAmount()-amount);
 			accounts.get(toAcc).setCurrentAmount(accounts.get(toAcc).getCurrentAmount()+amount);
+			
 			tranferlogs.add(new TransferLog(fromAcc,toAcc,amount));
+			logs.add(new TransferLog(fromAcc,toAcc,amount));
 			return true;
 		}
 		return false;
@@ -127,6 +139,7 @@ public class Portfolio {
 	public boolean deposit(String acc, float amm){
 		if (accounts.get(acc).Deposit(amm)){
 			accountlogs.add(new AccountLog("Deposit",acc,amm));
+			logs.add(new AccountLog("Deposit",acc,amm));
 			return true;
 		}
 		return false;
@@ -135,6 +148,7 @@ public class Portfolio {
 	public boolean withdraw(String acc, float amm){
 		if (accounts.get(acc).Withdraw(amm)){
 			accountlogs.add(new AccountLog("Withdraw",acc,amm));
+			logs.add(new AccountLog("Withdraw",acc,amm));
 			return true;
 		}
 		return false;
@@ -170,8 +184,8 @@ public class Portfolio {
 		return watchlist;
 	}
 
-	public List<Log> getLogs() {
-		return logs;
+	public List<EquityLog> geteLogs() {
+		return elogs;
 	}
 
 	public List<AccountLog> getAccountlogs() {
