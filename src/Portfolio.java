@@ -26,6 +26,7 @@ public class Portfolio {
 		this.user = user;
 		this.pass = pass;
 		this.accounts.put(acc.getName(), acc);
+		
 	}
 	
 	public Portfolio() {}
@@ -46,12 +47,14 @@ public class Portfolio {
 				ownedEquities.put(tic, o+num);
 				elogs.add(new EquityLog(num,tic,acc,"Buy",num*price));
 				logs.add(new EquityLog(num,tic,acc,"Buy",num*price));
+				Main.pExport(new ExportAll());
 				return true;
 			}
 			else{
 				ownedEquities.put(tic, num);
 				elogs.add(new EquityLog(num,tic,acc,"Buy",num*price));
 				logs.add(new EquityLog(num,tic,acc,"Buy",num*price));
+				Main.pExport(new ExportAll());
 				return true;
 			}
 		}
@@ -68,26 +71,32 @@ public class Portfolio {
 
 	public void setOwnedEquities(Map<String, Integer> ownedEquities) {
 		this.ownedEquities = ownedEquities;
+		Main.pExport(new ExportAll());
 	}
 
 	public void setAccounts(Map<String, Account> accounts) {
 		this.accounts = accounts;
+		Main.pExport(new ExportAll());
 	}
 
 	public void setWatchlist(List<String> watchlist) {
 		this.watchlist = watchlist;
+		Main.pExport(new ExportAll());
 	}
 
 	public void seteLogs(List<EquityLog> logs) {
 		this.elogs = logs;
+		Main.pExport(new ExportAll());
 	}
 
 	public void setAccountlogs(List<AccountLog> accountlogs) {
 		this.accountlogs = accountlogs;
+		Main.pExport(new ExportAll());
 	}
 
 	public void setTranferlogs(List<TransferLog> tranferlogs) {
 		this.tranferlogs = tranferlogs;
+		Main.pExport(new ExportAll());
 	}
 
 	public boolean sellEquity(String tic, int num, String acc, float price){
@@ -101,6 +110,7 @@ public class Portfolio {
 			if (ownedEquities.get(tic) == 0){
 				ownedEquities.remove(tic);
 			}
+			Main.pExport(new ExportAll());
 			return true;
 		}
 		return false;
@@ -116,6 +126,7 @@ public class Portfolio {
 			
 			tranferlogs.add(new TransferLog(fromAcc,toAcc,amount));
 			logs.add(new TransferLog(fromAcc,toAcc,amount));
+			Main.pExport(new ExportAll());
 			return true;
 		}
 		return false;
@@ -127,10 +138,12 @@ public class Portfolio {
 		}
 		if (type.equals("Bank")){
 			accounts.put(name, new BankAccount(name,amm));
+			Main.pExport(new ExportAll());
 			return true;
 		}
 		else if (type.equals("Market")){
 			accounts.put(name, new MarketAccount(name,amm));
+			Main.pExport(new ExportAll());
 			return true;
 		}
 		return false;
@@ -140,6 +153,7 @@ public class Portfolio {
 		if (accounts.get(acc).Deposit(amm)){
 			accountlogs.add(new AccountLog("Deposit",acc,amm));
 			logs.add(new AccountLog("Deposit",acc,amm));
+			Main.pExport(new ExportAll());
 			return true;
 		}
 		return false;
@@ -149,6 +163,7 @@ public class Portfolio {
 		if (accounts.get(acc).Withdraw(amm)){
 			accountlogs.add(new AccountLog("Withdraw",acc,amm));
 			logs.add(new AccountLog("Withdraw",acc,amm));
+			Main.pExport(new ExportAll());
 			return true;
 		}
 		return false;
@@ -156,6 +171,7 @@ public class Portfolio {
 	
 	public boolean addToWatchlist(String eq){
 		watchlist.add(eq);
+		Main.pExport(new ExportAll());
 		return true;
 	}
 	

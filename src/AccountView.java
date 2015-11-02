@@ -164,7 +164,6 @@ public class AccountView extends JFrame {
 					float amount = Float.parseFloat(moneyTransfer.getText());
 					
 					if (portfolio.transfer(fr, to, amount)){
-						Main.ExportPortfolios();
 						JOptionPane.showMessageDialog(null, "Transfer Success");
 					}
 					else{
@@ -200,7 +199,6 @@ public class AccountView extends JFrame {
 					if (portfolio.getAccounts().get(acntName.getText()) == null) {
 						if (portfolio.addAccount(acntType.getSelectedItem().toString(), acntName.getText(), Float.parseFloat(acntWorth.getText()))){
 							comboBox.addItem(acntName.getText());
-							Main.ExportPortfolios();
 							title = "Account created";
 							actionPerformed(arg0);
 						}

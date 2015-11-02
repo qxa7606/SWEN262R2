@@ -69,6 +69,7 @@ public class PortfolioView {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String name = JOptionPane.showInputDialog("Enter Export location");
+				Main.pExport(new ExportOne(name, portfolio));
 				//mainToUse.iExport(name, portfolio);
 			}
 		});
