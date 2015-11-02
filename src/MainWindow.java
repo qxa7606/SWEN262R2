@@ -105,12 +105,12 @@ public class MainWindow implements ViewComponent {
 				int option = JOptionPane.showConfirmDialog(desiredPw, message, title, JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION) {
 					if (Main.getPortfolios().get(desiredName.getText()) == null) {
-						if (mainToUse.addUser(desiredName.getText(), 
+						if (Main.addUser(desiredName.getText(), 
 								new String(desiredPw.getPassword()), 
 								acntType.getSelectedItem().toString(), 
 								acntName.getText(), 
 								Float.parseFloat(acntWorth.getText()))){
-								Main.ExportPortfolios();
+								Main.pExport(new ExportAll());
 								title = "Success";
 						}
 						else{

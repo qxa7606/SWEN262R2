@@ -1,18 +1,18 @@
 import java.util.Date;
 
-public class TransferLog {
+public class TransferLog extends Log{
 
 		private String fromAccount;
 		private String toAccount;
 		private float ammount;
-		private Date date;
+		//private Date date;
 		
 		public TransferLog(String fromAccount, String toAccount, float ammount) {
-			super();
+			super(new Date());
 			this.fromAccount = fromAccount;
 			this.toAccount = toAccount;
 			this.ammount = ammount;
-			this.date = new Date();
+			//this.date = new Date();
 		}
 		
 		public String getFromAccount() {
@@ -23,9 +23,6 @@ public class TransferLog {
 		}
 		public float getAmmount() {
 			return ammount;
-		}
-		public Date getDate() {
-			return date;
 		}
 		
 		

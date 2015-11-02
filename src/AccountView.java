@@ -156,7 +156,6 @@ public class AccountView implements ViewComponent {
 					float amount = Float.parseFloat(moneyTransfer.getText());
 					
 					if (portfolio.transfer(fr, to, amount)){
-						Main.ExportPortfolios();
 						JOptionPane.showMessageDialog(null, "Transfer Success");
 					}
 					else{
@@ -190,8 +189,12 @@ public class AccountView implements ViewComponent {
 				if (option == JOptionPane.OK_OPTION) {
 					if (portfolio.getAccounts().get(acntName.getText()) == null) {
 						if (portfolio.addAccount(acntType.getSelectedItem().toString(), acntName.getText(), Float.parseFloat(acntWorth.getText()))){
+<<<<<<< HEAD
 							comboBox.comboBox.addItem(acntName.getText());
 							Main.ExportPortfolios();
+=======
+							comboBox.addItem(acntName.getText());
+>>>>>>> 2a9ce11e7f95b3fede5bb13f4b4b1d17a021798a
 							title = "Account created";
 							actionPerformed(arg0);
 						}

@@ -1,18 +1,18 @@
 import java.util.Date;
 
-public  class AccountLog {
+public  class AccountLog extends Log{
 	
 	private String type;
 	private String accountName;
 	private float ammount;
-	private Date date;
+	//private Date date;
 	
 	public AccountLog(String type, String accountName, float ammount) {
-		super();
+		super(new Date());
 		this.type = type;
 		this.accountName = accountName;
 		this.ammount = ammount;
-		this.date = new Date();
+		//this.date = new Date();
 	}
 	
 	public String getType() {
@@ -23,9 +23,6 @@ public  class AccountLog {
 	}
 	public float getAmmount() {
 		return ammount;
-	}
-	public Date getDate() {
-		return date;
 	}
 	
 	
