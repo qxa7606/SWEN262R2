@@ -15,14 +15,16 @@ import org.w3c.dom.Element;
 
 public class ExportOne extends Export{
 
-	Portfolio pp;
+	private Portfolio pp;
+	private String fix=null;
 	public ExportOne(String file, Portfolio p) {
-		super(file);
+		this.fix = file;
+		//super(file);
 		this.pp = p;
 	}
 
 	void export() {
-		String filename = super.filename;
+		String filename = fix+".xml";
 		SAXParserFactory factory = SAXParserFactory.newInstance();
         try {
     		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -206,10 +208,13 @@ public class ExportOne extends Export{
     		TransformerFactory transformerFactory = TransformerFactory.newInstance();
     		Transformer transformer = transformerFactory.newTransformer();
     		DOMSource source = new DOMSource(doc);
-    		StreamResult result = new StreamResult(new File(filename));
+    		if(filename!=null){
+        		StreamResult result = new StreamResult(new File(filename));
+        		transformer.transform(source, result);
+
+    		}
     		
     		//StreamResult re =  new StreamResult(System.out);
-    		transformer.transform(source, result);
             
         } catch (Throwable t) {
             t.printStackTrace ();

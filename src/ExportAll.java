@@ -16,7 +16,7 @@ import org.w3c.dom.Element;
 public class ExportAll extends Export{
 
 	public ExportAll() {
-		super("ExportedPortfolios.xml");
+		//super("ExportedPortfolios.xml");
 	}
 
 
@@ -46,7 +46,7 @@ public class ExportAll extends Export{
     			port.appendChild(user);
     			
     			Element pass = doc.createElement("Password");
-    			pass.appendChild(doc.createTextNode(((Portfolio) pair.getValue()).getPass()));
+    			pass.appendChild(doc.createTextNode(Main.encrypt(((Portfolio) pair.getValue()).getPass())));
     			port.appendChild(pass);
     			
     			Element own = doc.createElement("OwnedEquities");

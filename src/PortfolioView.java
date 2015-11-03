@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class PortfolioView implements ViewComponent{
+public class PortfolioView {
 	JFrame frame = new JFrame();
 	Portfolio portfolio;
 	Main mainToUse;
@@ -21,22 +21,33 @@ public class PortfolioView implements ViewComponent{
 	public PortfolioView(Portfolio portfolio, Main system) {
 		this.mainToUse = system;
 		this.portfolio = portfolio;
-		bounds(100, 100, 824, 546);
+		frame = new JFrame();
+		frame.setBounds(100, 100, 824, 546);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		setTitle("Portfolio");
-		
+		JTextField frameTitle = new JTextField();
+		frameTitle.setBackground(Color.LIGHT_GRAY);
+		frameTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		frameTitle.setFont(new Font("Tahoma", Font.PLAIN, 31));
+		frameTitle.setText("Portfolio");
+		frameTitle.setBounds(202, 11, 397, 68);
+		frameTitle.setEditable(false);
+		frame.getContentPane().add(frameTitle);
+		frameTitle.setColumns(10);
+
+		// adds buttons to the frame to look at equities,
+		// market accounts, and bank accounts
 		frame.getContentPane().add(equitiesButton(portfolio));
 		frame.getContentPane().add(mAccountsButton(portfolio));
 		frame.getContentPane().add(ExportButton(portfolio));
 		frame.getContentPane().add(logoutButton(portfolio));
 
-		visible(true);
+		frame.setVisible(true);
 	}
 
 	public JButton equitiesButton(Portfolio portfolio) {
-		ButtonLeaf viewEquities = new ButtonLeaf("View Equities", 352, 300, 200, 23, true);
-		viewEquities.button.addActionListener(new ActionListener() {
+		JButton viewEquities = new JButton("View Equities");
+		viewEquities.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -44,15 +55,16 @@ public class PortfolioView implements ViewComponent{
 				new EquityView(portfolio, mainToUse);
 			}
 		});
-		return viewEquities.button;
+		viewEquities.setBounds(352, 300, 200, 23);
+		return viewEquities;
 	}
 
 	public JButton ExportButton(Portfolio portfolio) {
 		
 		///UNIMPLEMENTED!!!
-		ButtonLeaf bbutton = new ButtonLeaf("Export", 352, 330, 200, 23, true);
+		JButton bbutton = new JButton("Export");
 
-		bbutton.button.addActionListener(new ActionListener() {
+		bbutton.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -61,12 +73,13 @@ public class PortfolioView implements ViewComponent{
 				//mainToUse.iExport(name, portfolio);
 			}
 		});
-		return bbutton.button;
+		bbutton.setBounds(352, 330, 200, 23);
+		return bbutton;
 	}
 
 	public JButton mAccountsButton(Portfolio portfolio) {
-		ButtonLeaf viewMarketAccount = new ButtonLeaf("View Accounts", 352, 360, 200, 23, true);
-		viewMarketAccount.button.addActionListener(new ActionListener() {
+		JButton viewMarketAccount = new JButton("View Accounts");
+		viewMarketAccount.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -87,7 +100,8 @@ public class PortfolioView implements ViewComponent{
 				mainToUse.setAccountView(new AccountView(portfolio, mainToUse));
 			}
 		});
-		return viewMarketAccount.button;
+		viewMarketAccount.setBounds(352, 360, 200, 23);
+		return viewMarketAccount;
 	}
 	/*
 	 * public JButton bAccountsButton(Portfolio portfolio) { JButton
@@ -112,45 +126,18 @@ public class PortfolioView implements ViewComponent{
 	 */
 
 	public JButton logoutButton(Portfolio portfolio) {
-		ButtonLeaf viewLogout = new ButtonLeaf("Logout", 352, 390, 200, 23, true);
-		viewLogout.button.addActionListener(new ActionListener() {
+		JButton viewLogout = new JButton("Logout");
+		viewLogout.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				frame.setVisible(false);
-				mainToUse.getMainWindow().getComponent();
+				mainToUse.getMainWindow().initialize();
 				mainToUse.getMainWindow().frame.setVisible(true);
 			}
 		});
-		return viewLogout.button;
-	}
-
-	@Override
-	public void setTitle(String title) {
-		JTextField frameTitle = new JTextField();
-		frameTitle.setBackground(Color.LIGHT_GRAY);
-		frameTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		frameTitle.setFont(new Font("Tahoma", Font.PLAIN, 31));
-		frameTitle.setText(title);
-		frameTitle.setBounds(202, 11, 397, 68);
-		frameTitle.setEditable(false);
-		frame.getContentPane().add(frameTitle);
-		frameTitle.setColumns(10);		
-	}
-
-	@Override
-	public void bounds(int x, int y, int width, int height) {
-		frame.setBounds(x,y,width,height);
-	}
-
-	@Override
-	public void visible(boolean isVisible) {
-		frame.setVisible(isVisible);
-	}
-
-	@Override
-	public ViewComponent getComponent() {
-		return this;
+		viewLogout.setBounds(352, 390, 200, 23);
+		return viewLogout;
 	}
 
 }

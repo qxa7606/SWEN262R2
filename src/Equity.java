@@ -14,6 +14,25 @@ public class Equity {
 		this.indices = indices;
 	}
 
+	public Equity() {
+	}
+
+	public void setTicker(String ticker) {
+		this.ticker = ticker;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPrice(float price) {
+		this.price = price;
+	}
+
+	public void setIndices(List<String> indices) {
+		this.indices = indices;
+	}
+
 	public String getTicker() {
 		return ticker;
 	}

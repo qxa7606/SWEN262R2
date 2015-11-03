@@ -1,4 +1,12 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -6,10 +14,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Timer;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -32,9 +45,13 @@ public class Main {
 	private static AccountView accountView;
 
 
-	public static void main(String args[]){
+	public static void main(String args[]) throws IOException, XMLStreamException{
 		ImportEquities("equities.xml");
 		ExportEquities("equities.xml");
+		ImportWebService(equities);
+		
+		Timer timer = new Timer();
+		timer.schedule(new Update(), 0, 30000);
 		
 		Portfolio p = new Portfolio("Qasim", "ABC123", new BankAccount("AccountFirst", 1000.0f));
 		p.buyEquity("ABC", 2, "AccountFirst", 22.50f);
@@ -56,9 +73,8 @@ public class Main {
 		p1.sellEquity("ABC", 2, "firstAccount", 30.55f);
 		portfolios.put("Asim", p1);
 		
-		mainWindow = new MainWindow("FPTS", 100, 100, 824, 546, false);
-		mainWindow.getComponent();
-		//mainWindow.frame.setVisible(true);
+		mainWindow = new MainWindow();
+		mainWindow.frame.setVisible(true);
 		//ExportPortfolios("exportedPortfolios.xml");
 		
 		
@@ -131,7 +147,7 @@ public class Main {
 	    			String user = eElement.getElementsByTagName("User").item(0).getTextContent();
 	    			String pass = eElement.getElementsByTagName("Password").item(0).getTextContent();
 	    			one.setUser(user);
-	    			one.setPass(pass);
+	    			one.setPass(decrypt(pass));
 	    			
 	    			NodeList eq = eElement.getElementsByTagName("OwnedEquities");
 	    			Map<String, Integer> eqs = new HashMap<String, Integer>();
@@ -263,9 +279,7 @@ public class Main {
         }
 	}
 	
-	public static void ExportIndividualPortfolio(Portfolio p, String filename){
-		
-	}
+
 	
 	public static void setMainWindow(MainWindow mainWindow) {
 		Main.mainWindow = mainWindow;
@@ -291,4 +305,109 @@ public class Main {
 		Main.accountView = accountView;
 	}
 	
+	public static String encrypt(String s) {
+		String from = "abcdefghijklmnopqrstuvwxyz5430987621";
+		String to = "qwertyuiopasdfghjklzxcvbnm0987654321";
+		Map<Character, Character> map = new HashMap<Character, Character>();
+		String re = "";
+		for (int i = 0; i < from.length(); ++i) {
+			map.put(from.charAt(i), to.charAt(i));
+		}
+		for (char c : s.toCharArray()) {
+			re = re + map.get(c);
+		}
+		return re;
+
+	}
+
+	public static String decrypt(String s) {
+		String from = "abcdefghijklmnopqrstuvwxyz5430987621";
+		String to = "qwertyuiopasdfghjklzxcvbnm0987654321";
+		Map<Character, Character> map = new HashMap<Character, Character>();
+		String re = "";
+		for (int i = 0; i < from.length(); ++i) {
+			map.put(to.charAt(i), from.charAt(i));
+		}
+		for (char c : s.toCharArray()) {
+			re = re + map.get(c);
+		}
+		return re;
+	}
+	
+	public static void ImportWebService (Map<String,Equity> lst) throws IOException, XMLStreamException{
+		String url = "http://query.yahooapis.com/v1/public/yql?q=select%20Symbol,LastTradePriceOnly,Name%20from%20yahoo.finance.quotes%20where%20symbol%20in%20%28%22AAPL,AXP,BA,CAT,CSCO,CVX,DD,DIS,GE,GS,HD,IBM,INTC,JNJ,JPM,KO,MCD,MMM,MRK,MSFT,NKE,PFE,PG,TRV,UNH,UTX,V,VZ,WMT,XOM%22%29&env=store://datatables.org/alltableswithkeys";
+		BufferedWriter writer = new BufferedWriter(new FileWriter("response.xml"));
+
+		// Create a URL and open a connection
+		URL YahooURL = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) YahooURL.openConnection();
+
+		// Set the HTTP Request type method to GET (Default: GET)
+		con.setRequestMethod("GET");
+		con.setConnectTimeout(10000);
+		con.setReadTimeout(10000);
+
+		// Created a BufferedReader to read the contents of the request.
+		BufferedReader in = new BufferedReader(
+				new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuilder response = new StringBuilder();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+
+		// MAKE SURE TO CLOSE YOUR CONNECTION!
+		in.close();
+
+		//writing to a xml file
+		try{
+
+			// response is the contents of the XML
+			writer.write(response.toString());
+			//System.out.println(response.toString());
+		} finally {
+			if (writer != null) writer.close();
+		}
+
+		//parsing
+
+		String tagContent = null;
+		XMLInputFactory factory = XMLInputFactory.newInstance();
+		XMLStreamReader reader = factory.createXMLStreamReader(new FileReader("response.xml"));
+
+		Equity currStock = null;
+		while(reader.hasNext()){
+			int event = reader.next();
+
+			switch(event){
+			case XMLStreamConstants.START_ELEMENT: 
+				if("quote".equals(reader.getLocalName())){
+					currStock = new Equity();
+				}
+				break;
+
+			case XMLStreamConstants.CHARACTERS:
+				tagContent = reader.getText().trim();
+				break;
+
+			case XMLStreamConstants.END_ELEMENT:
+				switch(reader.getLocalName()){
+				case "quote":
+					lst.put(currStock.getTicker(), currStock);
+					break;
+				case "Symbol":
+					currStock.setTicker(tagContent);
+					break;
+				case "LastTradePriceOnly":
+					currStock.setPrice(Float.parseFloat(tagContent));
+					break;
+				case "Name":
+					currStock.setName(tagContent);
+					break;
+				}
+				break;
+			}	
+		}
+	}
 }
