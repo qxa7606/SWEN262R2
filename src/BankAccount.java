@@ -1,3 +1,4 @@
+import java.util.Date;
 
 public class BankAccount extends Account{
 
@@ -9,5 +10,6 @@ public class BankAccount extends Account{
 	String getType() {
 		return "Bank";
 	}
+
 
 }

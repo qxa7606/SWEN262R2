@@ -211,14 +211,10 @@ public class Portfolio {
 	public List<TransferLog> getTransferlogs() {
 		return tranferlogs;
 	}
-	
-	public List<Object> getRecent(List<Object> l){
+
+	public void setLogs(ArrayList<Log> ls) {
+		this.logs = ls;
 		
-		List<Object> lst = l;
-		BeanComparator bc = new BeanComparator(Object.class, "getDate");
-		Collections.sort(lst, bc);
-		
-		return lst;
 	}
 
 }
