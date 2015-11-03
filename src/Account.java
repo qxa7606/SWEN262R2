@@ -16,6 +16,8 @@ public abstract class Account {
 		this.dateAdded = new Date();
 	}
 	
+	public Account(){}
+	
 	public boolean Deposit(float amount){
 		this.currentAmount += amount;
 		return true;
@@ -48,5 +50,17 @@ public abstract class Account {
 
 	public void setCurrentAmount(float currentAmount) {
 		this.currentAmount = currentAmount;
+	}
+	
+	public void setDateAdded(Date date){
+		this.dateAdded = date;
+	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	public void setInitialAmount(Float i) {
+		this.initialAmount = i;
 	}
 }

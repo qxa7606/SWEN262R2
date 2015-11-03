@@ -88,6 +88,10 @@ public class Portfolio {
 		this.elogs = logs;
 		Main.pExport(new ExportAll());
 	}
+	
+	public void setLogs(List<Log> arrayList) {
+		this.logs = arrayList;
+	}
 
 	public void setAccountlogs(List<AccountLog> accountlogs) {
 		this.accountlogs = accountlogs;
@@ -211,10 +215,14 @@ public class Portfolio {
 	public List<TransferLog> getTransferlogs() {
 		return tranferlogs;
 	}
-
-	public void setLogs(ArrayList<Log> ls) {
-		this.logs = ls;
+	
+	public List<Object> getRecent(List<Object> l){
 		
+		List<Object> lst = l;
+		BeanComparator bc = new BeanComparator(Object.class, "getDate");
+		Collections.sort(lst, bc);
+		
+		return lst;
 	}
 
 }

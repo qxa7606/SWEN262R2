@@ -1,17 +1,22 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Timer;
@@ -48,30 +53,11 @@ public class Main {
 	public static void main(String args[]) throws IOException, XMLStreamException{
 		ImportEquities("equities.xml");
 		ExportEquities("equities.xml");
+		ImportPortfolios("exportedPortfolios.xml");
 		ImportWebService(equities);
 		
 		Timer timer = new Timer();
 		timer.schedule(new Update(), 0, 30000);
-		
-		Portfolio p = new Portfolio("Qasim", "ABC123", new BankAccount("AccountFirst", 1000.0f));
-		p.buyEquity("ABC", 2, "AccountFirst", 22.50f);
-		p.buyEquity("EDF", 2, "AccountFirst", 33.97f);
-		p.addToWatchlist("YTZ");
-		p.addToWatchlist("XYZ");
-		p.addAccount("Market", "AccountSecond", 3300.40f);
-		p.transfer("AccountFirst", "AccountSecond", 50.0f);
-		p.withdraw("AccountFirst", 20.55f);
-		p.withdraw("AccountFirst", 10.55f);
-		portfolios.put("Qasim", p);
-		
-		Portfolio p1 = new Portfolio("Asim", "MandT", new MarketAccount("firstAccount", 2500.0f));
-		p1.buyEquity("ABC", 2, "firstAccount", 22.50f);
-		p1.buyEquity("EDF", 2, "firstAccount", 33.97f);
-		p1.addToWatchlist("TYU");
-		p1.addToWatchlist("XYTZ");
-		p1.addAccount("Bank", "secondAccount", 3300.40f);
-		p1.sellEquity("ABC", 2, "firstAccount", 30.55f);
-		portfolios.put("Asim", p1);
 		
 		mainWindow = new MainWindow();
 		mainWindow.frame.setVisible(true);
@@ -118,62 +104,124 @@ public class Main {
 	
 	
 	
-	public static void ImportPortfolios(String filename){
-	    try {
+	@SuppressWarnings("null")
+	public static void ImportPortfolios(String filename) throws FileNotFoundException, XMLStreamException, ParseException{
+	    
+		
+		String tagContent = null;
+		XMLInputFactory factory = XMLInputFactory.newInstance();
+		XMLStreamReader reader = factory.createXMLStreamReader(new FileReader("exportedPortfolios.xml"));
+		BankAccount bAccount = null;
+		MarketAccount mAccount = null;
+		Portfolio currPortfolio = null;
+		int whichType = 0; //1 is bank, 2 is market
+		while(reader.hasNext()){
+			int event = reader.next();
 
-	    	File fXmlFile = new File(filename);
-	    	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-	    	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-	    	Document doc = dBuilder.parse(fXmlFile);
-	    			
-	    	doc.getDocumentElement().normalize();
-	
-	    	NodeList nList = doc.getElementsByTagName("Portfolio");
+			switch(event){
+			
+			case XMLStreamConstants.START_ELEMENT: 
+				switch(reader.getLocalName()){
+				case "Portfolio":
+					currPortfolio = new Portfolio();
+					currPortfolio.setOwnedEquities(new HashMap<String, Integer>());
+					currPortfolio.setAccounts(new HashMap<String, Account>());
+					currPortfolio.setLogs(new ArrayList<Log>());
+					currPortfolio.setWatchlist(new ArrayList<String>());
+					break;
+					
+				case "BankAccount":
+					bAccount = new BankAccount();
+					whichType = 1;
+					break;
+					
+				case "MarketAccount":
+					mAccount = new MarketAccount();
+					whichType = 2;
+					break;
+				}
+				break;
+				
+			case XMLStreamConstants.CHARACTERS:
+				tagContent = reader.getText().trim();
+				
+				break;
 
-	    	for (int temp = 0; temp < nList.getLength(); temp++) {
-
-	    		Node port = nList.item(temp);
-	    		String use = port.getFirstChild().getNodeValue();
-	    		String pas = port.getFirstChild().getNextSibling().getNodeValue();
-	    		
-	    		
-	    				
-	    		if (port.getNodeType() == Node.ELEMENT_NODE) {
-
-	    			Element eElement = (Element) port;
-	    			
-	    			Portfolio one = new Portfolio();
-	    			
-	    			String user = eElement.getElementsByTagName("User").item(0).getTextContent();
-	    			String pass = eElement.getElementsByTagName("Password").item(0).getTextContent();
-	    			one.setUser(user);
-	    			one.setPass(decrypt(pass));
-	    			
-	    			NodeList eq = eElement.getElementsByTagName("OwnedEquities");
-	    			Map<String, Integer> eqs = new HashMap<String, Integer>();
-	    			for (int i=0;i<eq.getLength();i++){
-	    				Element value = (Element) eq.item(i);
-	    				NodeList val = value.getElementsByTagName("Value");
-	    			}
-	    			
-	    			
-	    			NodeList bacc = eElement.getElementsByTagName("BankAccounts");
-	    			NodeList macc = eElement.getElementsByTagName("MarketAccounts");
-	    			NodeList weq = eElement.getElementsByTagName("WatchListEquities");
-	    			
-	    			NodeList log = eElement.getElementsByTagName("Logs");
-	    			NodeList alog = eElement.getElementsByTagName("AccountLogs");
-	    			NodeList tlog = eElement.getElementsByTagName("TransferLogs");
-	    			
-	    			
-	    			
-
-	    			}
-	    		}
-	        } catch (Exception e) {
-	    	e.printStackTrace();
-	        }
+			case XMLStreamConstants.END_ELEMENT:
+				//portfolio info
+				switch(reader.getLocalName()){
+				case "Portfolio":
+					portfolios.put(currPortfolio.getUser(), currPortfolio);
+					break;
+				case "Username":
+					currPortfolio.setUser(tagContent);
+					break;
+				case "Password":
+					currPortfolio.setPass(tagContent);
+					break;
+				//owned equities
+				case "Value":
+					String[] eInfo = tagContent.split(",");
+					currPortfolio.getOwnedEquities().put(eInfo[0], Integer.parseInt(eInfo[1]));
+					break;
+				//account info
+				case "BankAccount":
+					currPortfolio.getAccounts().put(bAccount.getName(), bAccount);
+					break;
+				case "MarketAccount":
+					currPortfolio.getAccounts().put(mAccount.getName(), mAccount);
+				case "Name":
+					if (whichType == 1) {
+						bAccount.setName(tagContent);
+					} else if(whichType == 2) {
+						mAccount.setName(tagContent);
+					}
+					break;
+				case "InitialAmount":
+					if (whichType == 1) {
+						bAccount.setInitialAmount(Float.parseFloat(tagContent));
+					} else if(whichType == 2) {
+						mAccount.setInitialAmount(Float.parseFloat(tagContent));
+					}
+					break;
+				case "CurrentAmount":
+					if (whichType == 1) {
+						bAccount.setCurrentAmount(Float.parseFloat(tagContent));
+					} else if(whichType == 2) {
+						mAccount.setCurrentAmount(Float.parseFloat(tagContent));
+					}
+					break;
+				case "DateCreated":
+					SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", new Locale("us"));
+					Date d = sdf.parse(tagContent);
+					if (whichType == 1) {
+						bAccount.setDateAdded(d);
+					} else if(whichType == 2) {
+						mAccount.setDateAdded(d);
+					}
+					break;
+				// equity watchlist
+				case "Ticker":
+					currPortfolio.getWatchlist().add(tagContent);
+					break;
+					
+				//transfer logs
+				case "Transfer Log":
+					//currPortfolio.getTransferlogs().add(currTLog);
+					break;
+				case "Equity Log":
+					//currPortfolio.getTransferlogs().add(currTLog);
+					break;
+				case "Account Log":
+					//currPortfolio.getTransferlogs().add(currTLog);
+					break;
+				}
+				
+				break;
+			}	
+		}
 	}
+	
 	
 	
 	public static void pExport(Export e){

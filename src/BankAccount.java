@@ -1,4 +1,3 @@
-import java.util.Date;
 
 public class BankAccount extends Account{
 
@@ -6,10 +5,13 @@ public class BankAccount extends Account{
 		super(name, initialAmount);
 	}
 
+	public BankAccount() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	String getType() {
 		return "Bank";
 	}
-
 
 }
