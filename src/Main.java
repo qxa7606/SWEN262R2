@@ -51,10 +51,10 @@ public class Main {
 	private static AccountView accountView;
 
 
-	public static void main(String args[]) throws IOException, XMLStreamException{
+	public static void main(String args[]) throws IOException, XMLStreamException, ParseException{
 		ImportEquities("equities.xml");
 		ExportEquities("equities.xml");
-		//ImportPortfolios("exportedPortfolios.xml");
+		ImportPortfolios("exportedPortfolios.xml");
 		ImportWebService(equities);
 		
 		Timer timer = new Timer();
@@ -158,7 +158,7 @@ public class Main {
 					currPortfolio.setUser(tagContent);
 					break;
 				case "Password":
-					currPortfolio.setPass(tagContent);
+					currPortfolio.setPass(decrypt(tagContent));
 					break;
 				//owned equities
 				case "Value":
