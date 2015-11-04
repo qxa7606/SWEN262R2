@@ -216,13 +216,5 @@ public class Portfolio {
 		return tranferlogs;
 	}
 	
-	public List<Object> getRecent(List<Object> l){
-		
-		List<Object> lst = l;
-		BeanComparator bc = new BeanComparator(Object.class, "getDate");
-		Collections.sort(lst, bc);
-		
-		return lst;
-	}
 
 }

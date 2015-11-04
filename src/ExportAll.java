@@ -13,14 +13,14 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class ExportAll extends Export{
+public class ExportAll implements Export{
 
 	public ExportAll() {
 		//super("ExportedPortfolios.xml");
 	}
 
 
-	void export() {
+	public void export() {
 		String filename = "ExportedPortfolios.xml";
 		SAXParserFactory factory = SAXParserFactory.newInstance();
         try {

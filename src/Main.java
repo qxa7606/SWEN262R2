@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -53,7 +54,7 @@ public class Main {
 	public static void main(String args[]) throws IOException, XMLStreamException{
 		ImportEquities("equities.xml");
 		ExportEquities("equities.xml");
-		ImportPortfolios("exportedPortfolios.xml");
+		//ImportPortfolios("exportedPortfolios.xml");
 		ImportWebService(equities);
 		
 		Timer timer = new Timer();

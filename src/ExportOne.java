@@ -13,7 +13,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class ExportOne extends Export{
+public class ExportOne implements Export{
 
 	private Portfolio pp;
 	private String fix=null;
@@ -23,7 +23,7 @@ public class ExportOne extends Export{
 		this.pp = p;
 	}
 
-	void export() {
+	public void export() {
 		String filename = fix+".xml";
 		SAXParserFactory factory = SAXParserFactory.newInstance();
         try {

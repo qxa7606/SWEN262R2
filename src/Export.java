@@ -1,4 +1,4 @@
 
-public abstract class Export {
-	abstract void export();
+public interface Export {
+	void export();
 }

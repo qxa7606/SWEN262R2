@@ -212,7 +212,22 @@ public class EquityView {
 				for (String key : portfolio.getAccounts().keySet()) {
 					fromAccount.addItem(key);
 				}
-				accountType.setText(Main.getEquities().get(comboBox.getSelectedItem().toString()).getName());
+				
+				String sym;
+				if (comboBox.getSelectedItem().toString().contains("color")){
+					String temp = comboBox.getSelectedItem().toString();
+					String s = "";
+					for (int y = 0; y < temp.length(); y++){
+						if (Character.isUpperCase(temp.charAt(y))){
+							s = s+temp.charAt(y);
+						}
+					}
+					sym = s;
+				}
+				else{
+					sym = comboBox.getSelectedItem().toString();
+				}
+				accountType.setText(Main.getEquities().get(sym.toString()).getName());
 				int option = JOptionPane.showConfirmDialog(desiredAmount, message, title, JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION) {
 					String title = "Press Ok if everything looks correct.";
@@ -220,16 +235,16 @@ public class EquityView {
 							portfolio.getAccounts().get(fromAccount.getSelectedItem().toString()).getCurrentAmount()));
 					funds.setEditable(false);
 					cost.setText(
-							Float.toString(Main.getEquities().get(comboBox.getSelectedItem().toString()).getPrice()
+							Float.toString(Main.getEquities().get(sym.toString()).getPrice()
 									* Integer.parseInt(desiredAmount.getText())));
 					cost.setEditable(false);
 					Object[] message = { "Cost:", cost, "Account funds:", funds, };
 					option = JOptionPane.showConfirmDialog(desiredAmount, message, title, JOptionPane.OK_CANCEL_OPTION);
 					if (option == JOptionPane.OK_OPTION) {
-						portfolio.sellEquity(Main.getEquities().get(comboBox.getSelectedItem().toString()).getTicker(), 
+						portfolio.sellEquity(Main.getEquities().get(sym).getTicker(), 
 								Integer.parseInt(desiredAmount.getText()), 
 								fromAccount.getSelectedItem().toString(), 
-								Main.getEquities().get(comboBox.getSelectedItem().toString()).getPrice());
+								Main.getEquities().get(sym).getPrice());
 
 					}
 				}
@@ -255,7 +270,23 @@ public class EquityView {
 				for (String key : portfolio.getAccounts().keySet()) {
 					fromAccount.addItem(key);
 				}
-				accountType.setText(Main.getEquities().get(comboBox.getSelectedItem().toString()).getName());
+				
+				String sym;
+				if (comboBox.getSelectedItem().toString().contains("color")){
+					String temp = comboBox.getSelectedItem().toString();
+					String s = "";
+					for (int y = 0; y < temp.length(); y++){
+						if (Character.isUpperCase(temp.charAt(y))){
+							s = s+temp.charAt(y);
+						}
+					}
+					sym = s;
+				}
+				else{
+					sym = comboBox.getSelectedItem().toString();
+				}
+				
+				accountType.setText(Main.getEquities().get(sym).getName());
 				int option = JOptionPane.showConfirmDialog(desiredAmount, message, title, JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION) {
 					String title = "Press Ok if everything looks correct.";
@@ -263,16 +294,16 @@ public class EquityView {
 							portfolio.getAccounts().get(fromAccount.getSelectedItem().toString()).getCurrentAmount()));
 					funds.setEditable(false);
 					cost.setText(
-							Float.toString(Main.getEquities().get(comboBox.getSelectedItem().toString()).getPrice()
+							Float.toString(Main.getEquities().get(sym).getPrice()
 									* Integer.parseInt(desiredAmount.getText())));
 					cost.setEditable(false);
 					Object[] message = { "Cost:", cost, "Account funds:", funds, };
 					option = JOptionPane.showConfirmDialog(desiredAmount, message, title, JOptionPane.OK_CANCEL_OPTION);
 					if (option == JOptionPane.OK_OPTION) {
-						portfolio.buyEquity(Main.getEquities().get(comboBox.getSelectedItem().toString()).getTicker(), 
+						portfolio.buyEquity(Main.getEquities().get(sym).getTicker(), 
 								Integer.parseInt(desiredAmount.getText()), 
 								fromAccount.getSelectedItem().toString(), 
-								Main.getEquities().get(comboBox.getSelectedItem().toString()).getPrice());
+								Main.getEquities().get(sym).getPrice());
 
 					}
 				}

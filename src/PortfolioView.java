@@ -55,7 +55,7 @@ public class PortfolioView {
 				new EquityView(portfolio, mainToUse);
 			}
 		});
-		viewEquities.setBounds(352, 300, 200, 23);
+		viewEquities.setBounds(300, 300, 200, 23);
 		return viewEquities;
 	}
 
@@ -73,7 +73,7 @@ public class PortfolioView {
 				//mainToUse.iExport(name, portfolio);
 			}
 		});
-		bbutton.setBounds(352, 330, 200, 23);
+		bbutton.setBounds(300, 330, 200, 23);
 		return bbutton;
 	}
 
@@ -100,7 +100,7 @@ public class PortfolioView {
 				mainToUse.setAccountView(new AccountView(portfolio, mainToUse));
 			}
 		});
-		viewMarketAccount.setBounds(352, 360, 200, 23);
+		viewMarketAccount.setBounds(300, 360, 200, 23);
 		return viewMarketAccount;
 	}
 	/*
@@ -136,7 +136,7 @@ public class PortfolioView {
 				mainToUse.getMainWindow().frame.setVisible(true);
 			}
 		});
-		viewLogout.setBounds(352, 390, 200, 23);
+		viewLogout.setBounds(300, 390, 200, 23);
 		return viewLogout;
 	}
 
