@@ -134,7 +134,7 @@ public class EquityView {
 		frame.getContentPane().add(comboBox);
 		for (String key : Main.getEquities().keySet()) {
 			if (portfolio.getOwnedEquities().containsKey(key)){
-				comboBox.addItem("<html><font color=\"red\">"+key+"</font></html>");
+				comboBox.addItem(key);
 			}
 			else{
 				comboBox.addItem(key);
@@ -142,7 +142,7 @@ public class EquityView {
 			
 		}
 
-
+		AutoCompletion.enable(comboBox);
 
 
 		
