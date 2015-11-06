@@ -117,7 +117,7 @@ public class ExportOne implements Export{
     			for (String s : pp.getWatchlist()){
     				//Element value = doc.createElement("Equity");
     				
-    				Element name = doc.createElement("Ticker");
+    				Element name = doc.createElement("TickerS");
     				name.appendChild(doc.createTextNode(s));
     				
     				//value.appendChild(name);

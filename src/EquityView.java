@@ -86,37 +86,51 @@ public class EquityView {
 		frame.getContentPane().add(lblBankAccount);
 
 		JLabel lblInitialAmount = new JLabel("Price");
-		lblInitialAmount.setBounds(279, 262, 83, 14);
+		lblInitialAmount.setBounds(279, 155, 83, 14);
 		frame.getContentPane().add(lblInitialAmount);
 
 		JLabel lblCurrentAmount = new JLabel("Indices");
-		lblCurrentAmount.setBounds(279, 287, 91, 14);
+		lblCurrentAmount.setBounds(279, 181, 91, 14);
 		frame.getContentPane().add(lblCurrentAmount);
 
 		JLabel own = new JLabel("Owned");
-		own.setBounds(279, 312, 91, 14);
+		own.setBounds(279, 207, 91, 14);
 		frame.getContentPane().add(own);
+		
+		JLabel lblAccount = new JLabel("Equity");
+		lblAccount.setBounds(279, 103, 83, 14);
+		frame.getContentPane().add(lblAccount);
+
+		JLabel lblAccountType = new JLabel("Equity Name");
+		lblAccountType.setBounds(279, 129, 83, 14);
+		frame.getContentPane().add(lblAccountType);
 		
 		owns = new JTextField();
 		owns.setEditable(false);
-		owns.setBounds(388, 307, 112, 20);
+		owns.setBounds(388, 204, 112, 20);
 		frame.getContentPane().add(owns);
 		owns.setColumns(10);
 		
 		bInitialAmount = new JTextField();
 		bInitialAmount.setEditable(false);
-		bInitialAmount.setBounds(388, 256, 112, 20);
+		bInitialAmount.setBounds(388, 152, 112, 20);
 		frame.getContentPane().add(bInitialAmount);
 		bInitialAmount.setColumns(10);
 		
 		bCurrentAmount = new JTextField();
 		bCurrentAmount.setEditable(false);
 		bCurrentAmount.setColumns(10);
-		bCurrentAmount.setBounds(388, 281, 112, 20);
+		bCurrentAmount.setBounds(388, 178, 112, 20);
 		frame.getContentPane().add(bCurrentAmount);
 
+		accountType = new JTextField();
+		accountType.setEditable(false);
+		accountType.setBounds(388, 126, 112, 20);
+		frame.getContentPane().add(accountType);
+		accountType.setColumns(10);
+		
 		comboBox = new JComboBox();
-		comboBox.setBounds(388, 208, 112, 20);
+		comboBox.setBounds(388, 100, 112, 20);
 		frame.getContentPane().add(comboBox);
 		for (String key : Main.getEquities().keySet()) {
 			if (portfolio.getOwnedEquities().containsKey(key)){
@@ -128,19 +142,8 @@ public class EquityView {
 			
 		}
 
-		JLabel lblAccount = new JLabel("Equity");
-		lblAccount.setBounds(279, 211, 83, 14);
-		frame.getContentPane().add(lblAccount);
 
-		JLabel lblAccountType = new JLabel("Equity Name");
-		lblAccountType.setBounds(279, 237, 83, 14);
-		frame.getContentPane().add(lblAccountType);
 
-		accountType = new JTextField();
-		accountType.setEditable(false);
-		accountType.setBounds(388, 232, 112, 20);
-		frame.getContentPane().add(accountType);
-		accountType.setColumns(10);
 
 		
 		// adds buttons to the frame to look at equities,
@@ -150,7 +153,10 @@ public class EquityView {
 		frame.getContentPane().add(chooseButton(portfolio));
 		frame.getContentPane().add(createAccountButton(portfolio));
 		frame.getContentPane().add(transferButton(portfolio));
-
+		frame.getContentPane().add(ownEquities(portfolio));
+		frame.getContentPane().add(watchlist(portfolio));
+		frame.getContentPane().add(adde(portfolio));
+		frame.getContentPane().add(rm(portfolio));
 	}
 
 	public JButton transferButton(Portfolio portfolio) {
@@ -175,7 +181,7 @@ public class EquityView {
 				"Choose interval of time:", timeInterval, "Input number of iterations:", timeSteps };
 
 		JButton bbutton = new JButton("Run Simulation");
-		bbutton.setBounds(279, 401, 221, 23);
+		bbutton.setBounds(279, 414, 221, 23);
 
 		bbutton.addActionListener(new ActionListener() {
 			String title = "Select Algorithm Settings";
@@ -204,7 +210,7 @@ public class EquityView {
 		Object[] message = { "Quantity:", desiredAmount, "Select Account:", fromAccount, };
 		String title = "Enter information below.";
 		JButton bbutton = new JButton("Sell");
-		bbutton.setBounds(279, 369, 221, 20);
+		bbutton.setBounds(279, 264, 221, 20);
 		bbutton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -264,7 +270,7 @@ public class EquityView {
 		Object[] message = { "Quantity:", desiredAmount, "Select Account:", fromAccount, };
 		String title = "Enter information below.";
 		JButton bbutton = new JButton("Buy");
-		bbutton.setBounds(279, 337, 221, 20);
+		bbutton.setBounds(279, 234, 221, 20);
 		bbutton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -316,8 +322,8 @@ public class EquityView {
 	}
 
 	public JButton chooseButton(Portfolio portfolio) {
-		JButton btnChoose = new JButton("Choose");
-		btnChoose.setBounds(510, 207, 89, 23);
+		JButton btnChoose = new JButton("Details");
+		btnChoose.setBounds(510, 99, 89, 23);
 		btnChoose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				//
@@ -373,7 +379,7 @@ public class EquityView {
 
 	public JButton backButton(Portfolio portfolio) {
 		JButton viewBankAccount = new JButton("Back");
-		viewBankAccount.setBounds(279, 435, 221, 23);
+		viewBankAccount.setBounds(279, 444, 221, 23);
 		viewBankAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frame.setVisible(false);
@@ -382,5 +388,93 @@ public class EquityView {
 			}
 		});
 		return viewBankAccount;
+	}
+	
+	public JButton ownEquities(Portfolio portfolio) {
+		JButton owwns = new JButton("Owned Equities");
+		owwns.setBounds(279, 384, 221, 23);
+		owwns.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String d  = "Ticker : Number owned\n";
+				for (String s : portfolio.getOwnedEquities().keySet()){
+					d = d + s + " : " +portfolio.getOwnedEquities().get(s).toString()+ "\n";
+				}
+				d = d.substring(0, d.length());
+				//frame.setVisible(false);
+				//mainToUse.getPortfolioView();
+				//mainToUse.getPortfolioView().frame.setVisible(true);
+				JOptionPane.showMessageDialog(null, d, "Owned equities", JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+		return owwns;
+	}
+	
+	public JButton watchlist(Portfolio portfolio) {
+		JButton bb = new JButton("Watchlist");
+		bb.setBounds(279, 354, 221, 23);
+		bb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String d  = "Ticker : current price\n";
+				for (String s : portfolio.getWatchlist()){
+					d = d + s + " : " + Float.toString(Main.getEquities().get(s).getPrice())+ "\n";
+				}
+				d = d.substring(0, d.length());
+				//frame.setVisible(false);
+				//mainToUse.getPortfolioView();
+				//mainToUse.getPortfolioView().frame.setVisible(true);
+				JOptionPane.showMessageDialog(null, d, "Watchlist equities", JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+		return bb;
+	}
+	
+	public JButton adde(Portfolio portfolio) {
+		JButton bb = new JButton("Add to Watchlist");
+		bb.setBounds(279, 294, 221, 23);
+		bb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String sym;
+				if (comboBox.getSelectedItem().toString().contains("color")){
+					String temp = comboBox.getSelectedItem().toString();
+					String s = "";
+					for (int y = 0; y < temp.length(); y++){
+						if (Character.isUpperCase(temp.charAt(y))){
+							s = s+temp.charAt(y);
+						}
+					}
+					sym = s;
+				}
+				else{
+					sym = comboBox.getSelectedItem().toString();
+				}
+				portfolio.addToWatchlist(sym);
+			}
+		});
+		return bb;
+	}
+	
+	public JButton rm(Portfolio portfolio) {
+		JButton bb = new JButton("Remove from Watchlist");
+		bb.setBounds(279, 324, 221, 23);
+		bb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String sym;
+				if (comboBox.getSelectedItem().toString().contains("color")){
+					String temp = comboBox.getSelectedItem().toString();
+					String s = "";
+					for (int y = 0; y < temp.length(); y++){
+						if (Character.isUpperCase(temp.charAt(y))){
+							s = s+temp.charAt(y);
+						}
+					}
+					sym = s;
+				}
+				else{
+					sym = comboBox.getSelectedItem().toString();
+				}
+				portfolio.removeFromWatchlist(sym);
+			}
+		});
+		return bb;
 	}
 }

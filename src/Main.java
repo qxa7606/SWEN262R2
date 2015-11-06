@@ -202,7 +202,7 @@ public class Main {
 					}
 					break;
 				// equity watchlist
-				case "Ticker":
+				case "TickerS":
 					currPortfolio.getWatchlist().add(tagContent);
 					break;
 					
@@ -221,6 +221,7 @@ public class Main {
 				break;
 			}	
 		}
+		pExport(new ExportAll());
 	}
 	
 	

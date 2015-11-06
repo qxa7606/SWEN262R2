@@ -174,9 +174,12 @@ public class Portfolio {
 	}
 	
 	public boolean addToWatchlist(String eq){
-		watchlist.add(eq);
-		Main.pExport(new ExportAll());
-		return true;
+		if (! watchlist.contains(eq)){
+			watchlist.add(eq);
+			Main.pExport(new ExportAll());
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean removeFromWatchlist(String tic){

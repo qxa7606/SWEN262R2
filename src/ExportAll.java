@@ -121,7 +121,7 @@ public class ExportAll implements Export{
     			for (String s : ((Portfolio) pair.getValue()).getWatchlist()){
     				//Element value = doc.createElement("Equity");
     				
-    				Element name = doc.createElement("Ticker");
+    				Element name = doc.createElement("TickerS");
     				name.appendChild(doc.createTextNode(s));
     				
     				//value.appendChild(name);
