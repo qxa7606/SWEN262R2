@@ -60,8 +60,8 @@ public class Main {
 		Timer timer = new Timer();
 		timer.schedule(new Update(), 0, 10000);
 		
-		mainWindow = new MainWindow();
-		mainWindow.frame.setVisible(true);
+		mainWindow = new MainWindow("FPTS", 100,100,824,546, false);
+		mainWindow.getComponent();
 		//ExportPortfolios("exportedPortfolios.xml");
 		
 		
