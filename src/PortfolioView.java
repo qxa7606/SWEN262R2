@@ -49,7 +49,6 @@ public class PortfolioView implements ViewComponent{
 
 	public JButton ExportButton(Portfolio portfolio) {
 		
-		///UNIMPLEMENTED!!!
 		ButtonLeaf bbutton = new ButtonLeaf("Export", 352, 330, 200, 23, true);
 
 		bbutton.button.addActionListener(new ActionListener() {

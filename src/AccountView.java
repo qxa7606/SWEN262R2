@@ -74,11 +74,14 @@ public class AccountView implements ViewComponent {
 		
 		accountType.field.setEditable(false);
 		accountType.field.setColumns(10);
+		frame.getContentPane().add(accountType.field);
 		
 		frame.getContentPane().add(comboBox.comboBox);
 		for (String key : portfolio.getAccounts().keySet()) {
 			comboBox.comboBox.addItem(key);
 		}
+		
+		AutoCompletion.enable(comboBox.comboBox);
 		
 		// adds buttons to the frame to look at equities,
 		// market accounts, and bank accounts
@@ -190,9 +193,12 @@ public class AccountView implements ViewComponent {
 					if (portfolio.getAccounts().get(acntName.getText()) == null) {
 						if (portfolio.addAccount(acntType.getSelectedItem().toString(), acntName.getText(), Float.parseFloat(acntWorth.getText()))){
 							comboBox.comboBox.addItem(acntName.getText());
-							comboBox.comboBox.addItem(acntName.getText());
-							title = "Account created";
-							actionPerformed(arg0);
+							//comboBox.comboBox.addItem(acntName.getText());
+							
+							frame.setVisible(false);
+							mainToUse.setAccountView(new AccountView(portfolio, mainToUse));
+							//title = "Account created";
+							//actionPerformed(arg0);
 						}
 						else{
 							title = "Account creation failed";
