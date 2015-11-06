@@ -245,6 +245,8 @@ public class EquityView {
 								Integer.parseInt(desiredAmount.getText()), 
 								fromAccount.getSelectedItem().toString(), 
 								Main.getEquities().get(sym).getPrice());
+						frame.setVisible(false);
+						new EquityView(portfolio, mainToUse);
 
 					}
 				}
@@ -304,7 +306,8 @@ public class EquityView {
 								Integer.parseInt(desiredAmount.getText()), 
 								fromAccount.getSelectedItem().toString(), 
 								Main.getEquities().get(sym).getPrice());
-
+						frame.setVisible(false);
+						new EquityView(portfolio, mainToUse);
 					}
 				}
 			}

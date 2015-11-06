@@ -58,7 +58,7 @@ public class Main {
 		ImportWebService(equities);
 		
 		Timer timer = new Timer();
-		timer.schedule(new Update(), 0, 30000);
+		timer.schedule(new Update(), 0, 10000);
 		
 		mainWindow = new MainWindow();
 		mainWindow.frame.setVisible(true);
