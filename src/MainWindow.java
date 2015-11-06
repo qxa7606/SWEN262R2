@@ -129,8 +129,14 @@ public class MainWindow {
 								acntName.getText(), 
 								Float.parseFloat(acntWorth.getText()))){
 								Main.pExport(new ExportAll());
-								title = "Success";
-								actionPerformed(arg0);
+								frame.setVisible(false);
+								JOptionPane.showMessageDialog(null, "Portfolio successfully created");
+
+								MainWindow mainWindow = new MainWindow();
+								mainWindow.frame.setVisible(true);
+								
+								//title = "Success";
+								//actionPerformed(arg0);
 						}
 						else{
 							title = "Account creation failed";
@@ -138,7 +144,8 @@ public class MainWindow {
 						}
 						
 					} else {
-						title = "That username is taken.";
+						JOptionPane.showMessageDialog(null, "That username already exists");
+						//title = "That username is taken.";
 						actionPerformed(arg0);
 					}
 				}

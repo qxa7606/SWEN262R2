@@ -109,6 +109,8 @@ public class AccountView extends JFrame {
 			comboBox.addItem(key);
 		}
 
+		AutoCompletion.enable(comboBox);
+		
 		JLabel lblAccount = new JLabel("Account");
 		lblAccount.setBounds(279, 211, 83, 14);
 		frame.getContentPane().add(lblAccount);
@@ -199,8 +201,10 @@ public class AccountView extends JFrame {
 					if (portfolio.getAccounts().get(acntName.getText()) == null) {
 						if (portfolio.addAccount(acntType.getSelectedItem().toString(), acntName.getText(), Float.parseFloat(acntWorth.getText()))){
 							comboBox.addItem(acntName.getText());
-							title = "Account created";
-							actionPerformed(arg0);
+							frame.setVisible(false);
+							mainToUse.setAccountView(new AccountView(portfolio, mainToUse));
+							//title = "Account created";
+							//actionPerformed(arg0);
 						}
 						else{
 							title = "Account creation failed";

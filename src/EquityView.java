@@ -448,6 +448,8 @@ public class EquityView {
 					sym = comboBox.getSelectedItem().toString();
 				}
 				portfolio.addToWatchlist(sym);
+				//JOptionPane.showMessageDialog(null, sym + " added to watchlist" );
+
 			}
 		});
 		return bb;
@@ -473,6 +475,8 @@ public class EquityView {
 					sym = comboBox.getSelectedItem().toString();
 				}
 				portfolio.removeFromWatchlist(sym);
+				//JOptionPane.showMessageDialog(null, sym +" removed from watchlist");
+
 			}
 		});
 		return bb;
